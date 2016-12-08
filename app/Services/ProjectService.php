@@ -3,28 +3,29 @@
  * Created by PhpStorm.
  * User: Narciso
  * Date: 08/12/2016
- * Time: 00:26
+ * Time: 16:11
  */
 
 namespace CodeProject\Services;
 
 
-use CodeProject\Validators\ClientValidator;
-use CodeProject\Repositories\ClientRepository;
+use CodeProject\Repositories\ProjectRepository;
+use CodeProject\Validators\ProjectValidator;
 use Prettus\Validator\Exceptions\ValidatorException;
 
-class ClientService
+class ProjectService
 {
+
     /**
-     * @var ClientRepository
+     * @var ProjectRepository
      */
     protected $repository;
     /**
-     * @var ClientValidator
+     * @var ProjectValidator
      */
     private $validator;
 
-    public function __construct(ClientRepository $repository, ClientValidator $validator)
+    public function __construct(ProjectRepository $repository, ProjectValidator $validator)
     {
         $this->repository = $repository;
 
@@ -55,7 +56,6 @@ class ClientService
                 'message' => $e->getMessageBag()
             ];
         }
-
     }
 
 
