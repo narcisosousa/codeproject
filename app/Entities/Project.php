@@ -18,11 +18,11 @@ class Project extends Model
 
     public function owner()
     {
-        return $this->hasMany('CodeProject\Entities\User', 'id');
+        return $this->belongsTo('CodeProject\Entities\User', 'owner_id');
     }
 
     public function client()
     {
-        return $this->hasMany('CodeProject\Entities\Client', 'id');
+        return $this->belongsTo('CodeProject\Entities\Client', 'client_id');
     }
 }

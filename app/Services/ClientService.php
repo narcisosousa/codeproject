@@ -11,6 +11,8 @@ namespace CodeProject\Services;
 
 use CodeProject\Validators\ClientValidator;
 use CodeProject\Repositories\ClientRepository;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 use Prettus\Validator\Exceptions\ValidatorException;
 
 class ClientService
@@ -56,6 +58,35 @@ class ClientService
             ];
         }
 
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $this->repository->find($id)->delete();
+            return ['success' => true, 'mensagem' => 'Cliente deletado com sucesso!'];
+        } catch (QueryException $e) {
+            return ['error' => true, 'mensagem' => 'Cliente não pode ser apagado.'];
+        } catch (ModelNotFoundException $e) {
+            return ['error' => true, 'mensagem' => 'Cliente não encontrado.'];
+        } catch (\Exception $e) {
+            return ['error' => true, 'mensagem' => 'Ocorreu algum erro ao excluir o projeto.'];
+        }
+    }
+
+
+
+    public function show($id)
+    {
+        try {
+            return $this->repository->find($id);
+        } catch (QueryException $e) {
+            return ['error' => true, 'mensagem' => $e->getMessage()];
+        } catch (ModelNotFoundException $e) {
+            return ['error' => true, 'mensagem' => 'Cliente Não Encontrado'];
+        } catch (\Exception $e) {
+            return ['error' => true, 'mensagem' => 'Ocorreu algum erro ao exibir o Cliente.'];
+        }
     }
 
 

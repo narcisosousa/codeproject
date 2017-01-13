@@ -33,11 +33,11 @@ class ClientController extends Controller
     }
 
     public function show($id){
-        return $this->repository->find($id);
+        return $this->service->show($id);
     }
 
     public function destroy($id){
-        $this->repository->delete($id);
+       return $this->service->destroy($id);
     }
     public function update(Request $request, $id){
         return $this->service->update($request->all(),$id);

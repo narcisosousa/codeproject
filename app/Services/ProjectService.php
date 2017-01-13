@@ -11,7 +11,10 @@ namespace CodeProject\Services;
 
 use CodeProject\Repositories\ProjectRepository;
 use CodeProject\Validators\ProjectValidator;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Prettus\Validator\Exceptions\ValidatorException;
+use Illuminate\Database\QueryException;
+
 
 class ProjectService
 {
@@ -55,8 +58,39 @@ class ProjectService
                 'error' => true,
                 'message' => $e->getMessageBag()
             ];
+        } catch (QueryException $e) {
+            return ['error' => true, 'mensagem' => $e->getMessage()];
+        } catch (ModelNotFoundException $e) {
+            return ['error' => true, 'mensagem' => 'Projeto Não Encontrado'];
+        } catch (\Exception $e) {
+            return ['error' => true, 'mensagem' => 'Ocorreu algum erro ao atualizar o Projeto.'];
         }
     }
 
+    public function destroy($id)
+    {
+        try {
+            $this->repository->find($id)->delete();
+            return ['success' => true, 'mensagem' => 'Projeto deletado com sucesso!'];
+        } catch (QueryException $e) {
+            return ['error' => true, 'mensagem' => 'Projeto não pode ser apagado pois existe um ou mais clientes vinculados a ele.'];
+        } catch (ModelNotFoundException $e) {
+            return ['error' => true, 'mensagem' => 'Projeto não encontrado.'];
+        } catch (\Exception $e) {
+            return ['error' => true, 'mensagem' => 'Ocorreu algum erro ao excluir o projeto.'];
+        }
+    }
 
+    public function show($id)
+    {
+        try {
+            return $this->repository->find($id);
+        } catch (QueryException $e) {
+            return ['error' => true, 'mensagem' => $e->getMessage()];
+        } catch (ModelNotFoundException $e) {
+            return ['error' => true, 'mensagem' => 'Projeto Não Encontrado'];
+        } catch (\Exception $e) {
+            return ['error' => true, 'mensagem' => 'Ocorreu algum erro ao exibir o Projeto.'];
+        }
+    }
 }
